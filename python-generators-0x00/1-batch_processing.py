@@ -44,6 +44,6 @@ def batch_processing(batch_size):
     print('in batch processing')
     results = stream_users_in_batches(batch_size)
     if results is not None:
-        for res in results:
-            for user in (u for u in res if u['age'] > 25):
+        for batch in results:
+            for user in (u for u in batch if u['age'] > 25):
                 print(user)
