@@ -5,6 +5,7 @@ import functools
 
 
 def log_queries(func):
+    @functools.wraps(func)
     def wrapper_log_query(*args, **kwargs):
         print(kwargs['query'])
         func(*args, **kwargs)

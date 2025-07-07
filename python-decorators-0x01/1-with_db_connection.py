@@ -4,6 +4,7 @@ import functools
 
 # wrapper that creates connection, passes it to function, closes after
 def with_db_connection(func):
+    @functools.wraps
     def connect_db(*args, **kwargs):
         conn = sqlite3.connect('users.db')
         kwargs['conn'] = conn
