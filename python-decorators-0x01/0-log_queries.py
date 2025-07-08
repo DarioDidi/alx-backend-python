@@ -15,6 +15,7 @@ logger = logging.getLogger('query_logger')
 def log_queries(func):
     @functools.wraps(func)
     def wrapper_log_query(*args, **kwargs):
+        print("in log query")
         q = kwargs['query']
         start = datetime.now()
         logger.info(
