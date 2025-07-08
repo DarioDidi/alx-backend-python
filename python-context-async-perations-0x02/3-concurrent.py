@@ -20,17 +20,18 @@ def log_queries(func):
     async def wrapper_log_query(*args, **kwargs):
         print("in log query")
         start = datetime.now()
-        logger.info(
+        print(
             f"Executing query: [Started at {start.strftime('%Y-%m-%d %H:%M:%S.%f')}]")
         try:
             res = await func(*args, **kwargs)
             end = datetime.now()
             duration = (end - start).total_seconds()
-            logger.info(
+            # logger.info(
+            print(
                 f"Query completed successfully in {duration:.4f} seconds [Rows affected: {len(res) if res is not None else 0}]")
 
         except aiosqlite.OperationalError as err:
-            logger.error(f"Query failed: {str(err)} func:{func.__name__}")
+            print(f"Query failed: {str(err)} func:{func.__name__}")
             raise
     return wrapper_log_query
 
@@ -40,6 +41,7 @@ async def async_fetch_users():
     async with aiosqlite.connect('../python-decorators-0x01/users.db') as db:
         async with db.execute("SELECT * FROM users") as cursor:
             res = await cursor.fetchall()
+            # print("\n\n\n\n\nUSERS", list(res)[:5])
             print("\n\n\n\n\nUSERS", list(res)[:5])
 
 
@@ -48,6 +50,7 @@ async def async_fetch_older_users():
     async with aiosqlite.connect('../python-decorators-0x01/users.db') as db:
         async with db.execute("SELECT * FROM users WHERE age > 40") as cursor:
             res = await cursor.fetchall()
+            # print("\n\n\n\n\nUSERS OVER 40:", list(res)[:5])
             print("\n\n\n\n\nUSERS OVER 40:", list(res)[:5])
 
 
