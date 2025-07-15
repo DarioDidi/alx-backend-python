@@ -11,7 +11,6 @@ class TestGithubOrgClient(unittest.TestCase):
     @parameterized.expand([("google",)])
     @patch('client.get_json')
     def test_org(self, org_name, mock_json):
-        print("testing for org", org_name)
         expected_response = {
             "name": org_name, "repos_url": f"https://api.github.com/orgs/{org_name}/repos"}
         mock_json.return_value = expected_response
@@ -30,7 +29,6 @@ class TestGithubOrgClient(unittest.TestCase):
             mock_org.return_value = expected_response
             a = GithubOrgClient('a')
             b = GithubOrgClient('b')
-            print("RETURN:", mock_org.return_value["repos_url"])
             self.assertEqual(a._public_repos_url,
                              expected_response["repos_url"])
             self.assertEqual(b._public_repos_url,

@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import PropertyMock, patch
+from unittest.mock import patch
 from parameterized import parameterized
 import requests
 from requests import get, request
@@ -52,8 +52,6 @@ class TestMemoize(unittest.TestCase):
 
         with patch.object(TestClass, 'a_method', return_value=42) as mock_method:
             test_instance = TestClass()
-            res = test_instance.a_property
-            print("RES:", res)
             self.assertEqual(test_instance.a_property, 42)
             self.assertEqual(test_instance.a_property, 42)
             mock_method.assert_called_once()
