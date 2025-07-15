@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """Generic utilities for github org client.
 """
-
 import requests
 from functools import wraps
-
-from typing import Mapping, Sequence, Any, Dict, Callable
-
+from typing import (
+    Mapping,
+    Sequence,
+    Any,
+    Dict,
+    Callable,
+)
 
 __all__ = [
     "access_nested_map",
@@ -29,7 +32,6 @@ def access_nested_map(nested_map: Mapping, path: Sequence) -> Any:
     >>> access_nested_map(nested_map, ["a", "b", "c"])
     1
     """
-
     for key in path:
         if not isinstance(nested_map, Mapping):
             raise KeyError(key)
@@ -70,4 +72,5 @@ def memoize(fn: Callable) -> Callable:
             setattr(self, attr_name, fn(self))
         return getattr(self, attr_name)
 
+    return memoized
     return property(memoized)
