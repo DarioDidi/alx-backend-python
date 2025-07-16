@@ -13,7 +13,7 @@ from fixtures import TEST_PAYLOAD
 
 
 class TestGithubOrgClient(unittest.TestCase):
-    """TestGithubOrgClient class"""
+    """a class for testing GithubOrgClient functionality"""
 
     @parameterized.expand([("google",)])
     @patch("client.get_json")
