@@ -64,8 +64,9 @@ class TestGithubOrgClient(unittest.TestCase):
         for repo in test_payload:
             expected_repos.append(repo["name"])
 
-        with patch.object(
-            GithubOrgClient, "_public_repos_url", new_callable=PropertyMock
+        with patch(
+            "client.GithubOrgClient._public_repos_url",
+            new_callable=PropertyMock,
         ) as mock_repos_url:
 
             mock_repos_url.return_value = example_repo_url
