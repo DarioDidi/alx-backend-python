@@ -31,11 +31,11 @@ class TestGithubOrgClient(unittest.TestCase):
     def test_public_repos_url(self):
 
         expected_response = {
-            "name": "abc", 
+            "name": "abc",
             "repos_url": f"https://api.github.com/orgs/abc/repos"
         }
-        with patch.object(GithubOrgClient, 
-                          'org', 
+        with patch.object(GithubOrgClient,
+                          'org',
                           new_callable=PropertyMock
                           ) as mock_org:
 
@@ -60,8 +60,8 @@ class TestGithubOrgClient(unittest.TestCase):
                 repo['name'])
 
         with patch.object(
-            GithubOrgClient, 
-             '_public_repos_url', 
+            GithubOrgClient,
+             '_public_repos_url',
              new_callable=PropertyMock
             ) as mock_repos_url:
 
