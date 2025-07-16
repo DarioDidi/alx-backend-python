@@ -13,6 +13,7 @@ print(
 
 
 print(__import__("test_client").__doc__)
+print(__import__("test_utils").__doc__)
 
 '''ORG_PAYLOAD = TEST_PAYLOAD[0][0]
 REPOS_PAYLOAD = TEST_PAYLOAD[0][1]
