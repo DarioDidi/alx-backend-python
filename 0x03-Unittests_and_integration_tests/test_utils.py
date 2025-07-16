@@ -9,6 +9,8 @@ from utils import access_nested_map, get_json, memoize
 
 
 class TestAccessNestedMap(unittest.TestCase):
+    """Test the map unnesting recursion"""
+
     @parameterized.expand(
         [
             ({"a": 1}, ("a",), 1),
@@ -17,16 +19,20 @@ class TestAccessNestedMap(unittest.TestCase):
         ]
     )
     def test_access_nested_map(self, nested_map, path, expected):
+        """Test working example"""
         self.assertEqual(access_nested_map(nested_map, path), expected)
 
     @parameterized.expand([({}, ("a",)), ({"a": 1}, ("a", "b"))])
     def test_access_nested_map_exception(self, nested_map, path):
+        """Test that it raises an expected exception on wrong key input"""
         with self.assertRaises(KeyError) as err:
             access_nested_map(nested_map, path)
         # self.assertEqual(err.msg, "license_key cannot be None")
 
 
 class TestGetJson(unittest.TestCase):
+    """Test the request loop that retrieves json"""
+
     @parameterized.expand(
         [
             ("http://example.com", {"payload": True}),
@@ -35,7 +41,8 @@ class TestGetJson(unittest.TestCase):
     )
     @patch("requests.get")
     def test_get_json(self, test_url, test_payload, mock_get):
-        # mocked request.get should have a response.json function that returns payload
+        """mocked request.get should have a response.json
+        function that returns payload"""
         mock_get.return_value.json = lambda: test_payload
         result = get_json(test_url)
         self.assertEqual(result, test_payload)
@@ -43,13 +50,21 @@ class TestGetJson(unittest.TestCase):
 
 
 class TestMemoize(unittest.TestCase):
+    """Test memoization of call results"""
+
     def test_memoize(self):
+        """Test memoization of call results"""
+
         class TestClass:
+            """example class just for testing"""
+
             def a_method(self):
+                """random method"""
                 return 42
 
             @memoize
             def a_property(self):
+                """call a_method and memoizes the result"""
                 return self.a_method()
 
         with patch.object(
