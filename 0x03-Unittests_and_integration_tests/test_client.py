@@ -54,6 +54,8 @@ class TestGithubOrgClient(unittest.TestCase):
                 b._public_repos_url, expected_response["repos_url"]
             )
 
+    """Implement TestGithubOrgClient.test_public_repos to unit-test GithubOrgClient.public_repos."""
+
     @patch("client.get_json")
     def test_public_repos(self, mock_json):
         """Test that public_repos returns the correct list of repos"""
