@@ -61,9 +61,9 @@ class TestGithubOrgClient(unittest.TestCase):
 
         with patch.object(
             GithubOrgClient,
-             '_public_repos_url',
-             new_callable=PropertyMock
-            ) as mock_repos_url:
+            '_public_repos_url',
+            new_callable=PropertyMock
+        ) as mock_repos_url:
 
             mock_repos_url.return_value = example_repo_url
 
@@ -75,7 +75,8 @@ class TestGithubOrgClient(unittest.TestCase):
             self.assertEqual(
                 c.public_repos(), expected_repos)
 
-            # Test that the mocked property and the mocked get_json was called once.
+            # Test that the mocked property 
+            #and the mocked get_json was called once.
             mock_json.assert_called_once()
             mock_repos_url.assert_called_once()
 
@@ -94,8 +95,7 @@ class TestGithubOrgClient(unittest.TestCase):
     ("org_payload", "repos_payload",
      "expected_repos", "apache2_repos"),
     [(TEST_PAYLOAD[0][0], TEST_PAYLOAD[0][1],
-        TEST_PAYLOAD[0][2], TEST_PAYLOAD[0][3]),]
-)
+        TEST_PAYLOAD[0][2], TEST_PAYLOAD[0][3]), ])
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -114,7 +114,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
             else:
                 # look ahead patter to  check that there is no repos request
                 '''i.e after....orgs/, there should NOT be
-                forward slash after org name 
+                forward slash after org name
                 that is followed by more text tested in extras.py'''
                 # respond with regular org name
                 lookahead_pattern = re.compile(
@@ -136,7 +136,6 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
             "google")
         self.assertEqual(test_class.public_repos(),
                          self.expected_repos)
-
     def test_public_repos_with_license(self):
         c = GithubOrgClient(
             'google')
