@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Test functionality of GithubOrgClient"""
 import requests
 import re
 import unittest
