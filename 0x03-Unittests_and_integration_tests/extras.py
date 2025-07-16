@@ -12,4 +12,4 @@ print(
 )
 
 
-print(__import__("my_module").my_function.__doc__)
+print(__import__("test_client").__doc__)

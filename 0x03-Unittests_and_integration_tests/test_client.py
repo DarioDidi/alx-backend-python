@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+Test functionality of GithubOrgClient class
+"""
 import requests
 import re
 import unittest
@@ -31,7 +34,7 @@ class TestGithubOrgClient(unittest.TestCase):
             pass
 
     def test_public_repos_url(self):
-        """Test that _public_repos_url 
+        """Test that _public_repos_url
         returns the correct value from the org payload"""
         expected_response = {
             "name": "abc",
