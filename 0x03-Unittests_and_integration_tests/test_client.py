@@ -70,7 +70,8 @@ class TestGithubOrgClient(unittest.TestCase):
             self.assertEqual(c.public_repos(), expected_repos)
             self.assertEqual(c.public_repos(), expected_repos)
 
-            # Test that the mocked property and the mocked get_json was called once.
+            # Test that the mocked property
+            # and the mocked get_json was called once.
             mock_json.assert_called_once()
             mock_repos_url.assert_called_once()
 
@@ -132,6 +133,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        """stop the patcher"""
         cls.get_patcher.stop()
 
     def test_public_repos(self):
