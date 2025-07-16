@@ -38,8 +38,12 @@ class TestGithubOrgClient(unittest.TestCase):
             mock_org.return_value = expected_response
             a = GithubOrgClient("a")
             b = GithubOrgClient("b")
-            self.assertEqual(a._public_repos_url, expected_response["repos_url"])
-            self.assertEqual(b._public_repos_url, expected_response["repos_url"])
+            self.assertEqual(
+                a._public_repos_url, expected_response["repos_url"]
+            )
+            self.assertEqual(
+                b._public_repos_url, expected_response["repos_url"]
+            )
 
     @patch("client.get_json")
     def test_public_repos(self, mock_json):
@@ -127,4 +131,6 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
     def test_public_repos_with_license(self):
         c = GithubOrgClient("google")
-        self.assertEqual(c.public_repos(license="apache-2.0"), self.apache2_repos)
+        self.assertEqual(
+            c.public_repos(license="apache-2.0"), self.apache2_repos
+        )
