@@ -87,6 +87,7 @@ class TestGithubOrgClient(unittest.TestCase):
         ]
     )
     def test_has_license(self, repo, key, expected_bool):
+        """check if a github client has a valid license"""
         self.assertEqual(GithubOrgClient.has_license(repo, key), expected_bool)
 
 
