@@ -10,10 +10,12 @@ from fixtures import TEST_PAYLOAD
 
 
 class TestGithubOrgClient(unittest.TestCase):
-    # @parameterized.expand([("google",), ("abc",)])
+    """TestGithubOrgClient class"""
+
     @parameterized.expand([("google",)])
     @patch("client.get_json")
     def test_org(self, org_name, mock_json):
+        """Test that GithubOrgClient.org returns the correct value"""
         expected_response = {
             "name": org_name,
             "repos_url": f"https://api.github.com/orgs/{org_name}/repos",
@@ -25,8 +27,12 @@ class TestGithubOrgClient(unittest.TestCase):
         mock_json.assert_called_once()
         mock_json.assert_called_once_with(c.ORG_URL.format(org=org_name))
 
-    def test_public_repos_url(self):
+        def __doc__():
+            pass
 
+    def test_public_repos_url(self):
+        """Test that _public_repos_url 
+        returns the correct value from the org payload"""
         expected_response = {
             "name": "abc",
             "repos_url": f"https://api.github.com/orgs/abc/repos",
@@ -47,6 +53,7 @@ class TestGithubOrgClient(unittest.TestCase):
 
     @patch("client.get_json")
     def test_public_repos(self, mock_json):
+        """Test that public_repos returns the correct list of repos"""
         example_repo_url = "https://api.github.com/orgs/google/repos"
         test_payload = TEST_PAYLOAD[0][1]
         mock_json.return_value = test_payload
@@ -92,23 +99,28 @@ class TestGithubOrgClient(unittest.TestCase):
     ],
 )
 class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """Integration test class for GithubOrgClient
+        with requests mocked
+    """
+
     @classmethod
     def setUpClass(cls) -> None:
+        """Set up class with mock patcher"""
         cls.get_patcher = patch("requests.get", return_value=TEST_PAYLOAD)
         cls.mock_get = cls.get_patcher.start()
         # cls.mock_get.return_value =
 
         def side_effect(url):
             """return different payloads based on URL"""
-            """if pattern ends in repos"""
+            # """if pattern ends in repos"""
             pattern = re.compile(r"^https://api.github.com/orgs/.*/repos$")
             if re.match(pattern, url):
                 cls.mock_get.json = lambda: cls.repos_payload
             else:
                 # look ahead patter to  check that there is no repos request
-                """i.e after....orgs/, there should NOT be
-                forward slash after org name
-                that is followed by more text tested in extras.py"""
+                # i.e after....orgs/, there should NOT be
+                # forward slash after org name
+                # that is followed by more text tested in extras.py"""
                 # respond with regular org name
                 lookahead_pattern = re.compile(
                     r"^https://api.github.com/orgs/(?!.+/.+).+"
@@ -130,6 +142,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         self.assertEqual(test_class.public_repos(), self.expected_repos)
 
     def test_public_repos_with_license(self):
+        """Test public_repos with license filter"""
         c = GithubOrgClient("google")
         self.assertEqual(
             c.public_repos(license="apache-2.0"), self.apache2_repos
