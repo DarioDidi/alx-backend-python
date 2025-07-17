@@ -4,9 +4,9 @@ from rest_framework import routers
 
 router = routers.DefaultRouter()
 router.register(
-    r"new/conversation", ConversationViewSet, basename="conversation"
+    r"conversations", ConversationViewSet, basename="conversations"
 )
-router.register(r"new/message", MessageViewSet, basename="message")
+router.register(r"messages", MessageViewSet, basename="messages")
 
 
 urlpatterns = [
