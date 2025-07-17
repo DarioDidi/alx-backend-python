@@ -1,10 +1,9 @@
 from django.contrib import admin
 from django.urls import include, path
 
-from rest_framework import routers
-from rest_framework_nested.routers import NestedDefaultRouter
-
-# from chats.views import ConversationViewSet, MessageViewSet
+# from rest_framework import routers
+# from rest_framework.authtoken.views import obtain_auth_token
+# from rest_framework_nested.routers import NestedDefaultRouter
 
 
 urlpatterns = [
