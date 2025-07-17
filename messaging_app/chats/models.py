@@ -7,7 +7,9 @@ from django.db import models
 
 class Users(AbstractUser):
     email = models.EmailField(unique=True)
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user_id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False
+    )
     first_name = models.CharField(blank=False, max_length=60)
     last_name = models.CharField(blank=False, max_length=60)
     phone_number = models.CharField(blank=False, max_length=13)
