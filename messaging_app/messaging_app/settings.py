@@ -33,6 +33,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost",
 ]
 
+AUTH_USER_MODEL = "chats.Users"
 # Application definition
 
 INSTALLED_APPS = [
