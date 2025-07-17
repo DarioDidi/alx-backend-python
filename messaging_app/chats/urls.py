@@ -1,8 +1,8 @@
 from django.urls import include, path
 from chats.views import ConversationViewSet, MessageViewSet
-from rest_framework.routers import DefaultRouter
+from rest_framework import routers
 
-router = DefaultRouter()
+router = routers.DefaultRouter()
 router.register(
     r"new/conversation", ConversationViewSet, basename="conversation"
 )
