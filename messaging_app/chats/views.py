@@ -1,9 +1,12 @@
-from django.contrib.admin.utils import lookup_field
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
+from .permissions import IsParticipantOfConversation
+from .pagination import MessagePagination
+from .filters import MessageFilter
 
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+
+# from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework import filters
 
 from chats.serializers import (
@@ -22,7 +25,9 @@ class MessageViewSet(viewsets.ViewSet):
     lookup_field = "message_uuid"
     serializer_class = MessageSerializer
     filter_backends = [filters.SearchFilter]
-    filterset_fields = ["sender", "message_body"]
+    filterset_fields = ["created_at", "sender"]
+    permission_classes = IsParticipantOfConversation
+    filterset_class = MessageFilter
 
     def list(self, req, pk=None):
         queryset = Message.objects.filter(conversation=pk)
@@ -45,12 +50,11 @@ class MessageViewSet(viewsets.ViewSet):
 
     def get_permissions(self):
         """
-        Instantiates and returns the list of permissions that this view requires.
+        Instantiates and returns the list of permissions
+        that this view requires.
         """
-        if self.action in ("list", "create", "retrieve"):
-            permission_classes = [IsAuthenticated]
-        else:
-            permission_classes = [IsAdminUser]
+
+        permission_classes = IsParticipantOfConversation
         return [permission() for permission in permission_classes]
 
     # def get_serializer(self):
@@ -66,6 +70,8 @@ class ConversationViewSet(viewsets.ViewSet):
     serializer_class = ConversationSerializer
     filter_backends = [filters.SearchFilter]
     filterset_fields = ["participants"]
+    permission_classes = IsParticipantOfConversation
+    pagination_class = MessagePagination
 
     def retrieve(self, request, pk=None):
         convo = get_object_or_404(Conversation, pk=pk)
@@ -77,3 +83,12 @@ class ConversationViewSet(viewsets.ViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save(serializer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def get_permissions(self):
+        """
+        Instantiates and returns the list of permissions
+        that this view requires.
+        """
+
+        permission_classes = IsParticipantOfConversation
+        return [permission() for permission in permission_classes]
