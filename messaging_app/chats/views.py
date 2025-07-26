@@ -91,6 +91,5 @@ class ConversationViewSet(viewsets.ViewSet):
         """
 
         permission_classes = IsParticipantOfConversation
-        return permission() for permission in permission_classes 
-        #return Response(serializer.data, status=status.HTTP_403)
-
+        return [permission() for permission in permission_classes]
+        # return Response(serializer.data, status=status.HTTP_403_FORBIDDEN

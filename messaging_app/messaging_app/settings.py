@@ -112,7 +112,9 @@ REST_FRAMEWORK = {
         "chats.permissions.IsParticipantOfConversation",
         "rest_framework.permissions.IsAuthenticated",
     ],
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "DEFAULT_PAGINATION_CLASS": [
+        "messaging_app.chats.core.pagination.MessagePagination"
+    ][0],
     "PAGE_SIZE": 20,
     "DEFAULT_FILTER_BACKENDS": (
         "django_filters.rest_framework.DjangoFilterBackend",
