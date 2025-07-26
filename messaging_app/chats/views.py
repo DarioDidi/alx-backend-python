@@ -66,7 +66,7 @@ class ConversationViewSet(viewsets.ViewSet):
     A simple ViewSet for listing or retrieving conversation messages.
     """
 
-    lookup_field = "conversation_uuid"
+    lookup_field = "conversation_id"
     serializer_class = ConversationSerializer
     filter_backends = [filters.SearchFilter]
     filterset_fields = ["participants"]

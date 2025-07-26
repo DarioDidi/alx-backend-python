@@ -1,17 +1,23 @@
-from rest_framework.permissions import BasePermission
+from rest_framework import permissions
 from .models import Conversation
 
 
-class IsParticipantOfConversation(BasePermission):
+class IsParticipantOfConversation(permissions.BasePermission):
     message = "Access Denied!"
 
     def has_permission(self, request, view):
-        obj = request.GET["pk"] or request.POST["pk"]
-        convo = Conversation.objects.get(pk=obj)
-        user_id = request.user.pk
-        return convo.participants.filter(id=user_id).exists()
+        conversation_id = (
+            request.GET["conversation_id"] or request.POST["conversation_id"]
+        )
+        convo = Conversation.objects.get(pk=conversation_id)
+        user = request.user
+        return (
+            user.is_authenticated
+            and convo.participants.filter(user_id=user).exists()
+        )
 
     def has_object_permission(self, request, view, obj):
 
-        # Instance must have an attribute named `owner`.
-        return obj.participants.filter(request.user).exists()
+        if request.method in ["PUT", "PATCH", "DELETE"]:
+            # Instance must have an attribute named `owner`.
+            return obj.participants.filter(request.user).exists()
