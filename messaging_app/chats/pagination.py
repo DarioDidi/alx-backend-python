@@ -1,8 +1,8 @@
-from rest_framework import paginator
+from rest_framework import pagination
 from rest_framework.response import Response
 
 
-class MessagePagination(paginator.PageNumberPagination):
+class MessagePagination(pagination.PageNumberPagination):
     page_size = 20
     page_size_query_param = "page_size"
 
