@@ -113,7 +113,8 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_PAGINATION_CLASS": [
-        "messaging_app.chats.core.pagination.MessagePagination"
+        "messaging_app.chats.core.pagination.MessagePagination",
+        "rest_framework.pagination.PageNumberPagination",
     ][0],
     "PAGE_SIZE": 20,
     "DEFAULT_FILTER_BACKENDS": (
