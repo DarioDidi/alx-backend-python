@@ -42,7 +42,6 @@ class RestrictAccessByTimeMiddleware:
         now = datetime.datetime.now()
         user = request.user
         response = self.get_response(request)
-        print(f"{datetime.now()} - User: {user} - Path: {request.path}")
 
         if not self.in_between(now):
             response = HttpResponseForbidden("Time out of service time")
@@ -51,3 +50,12 @@ class RestrictAccessByTimeMiddleware:
 
     def in_between(self, check_time):
         return self.start <= check_time <= self.deadline
+
+
+def OffensiveLanguageMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        ...
+
