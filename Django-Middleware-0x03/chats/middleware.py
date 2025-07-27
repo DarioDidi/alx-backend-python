@@ -1,5 +1,8 @@
 from datetime import datetime, time
 import logging
+from django.utils.deprecation import MiddlewareMixin
+from django.core.cache import cache
+from django.http import JsonResponse
 from django.http import HttpResponseForbidden
 
 logging.basicConfig(
@@ -52,10 +55,35 @@ class RestrictAccessByTimeMiddleware:
         return self.start <= check_time <= self.deadline
 
 
-def OffensiveLanguageMiddleware:
+class OffensiveLanguageMiddleware(MiddlewareMixin):
+    RATE_LIMIT = 5
+    TIME_PERIOD = 60  # in seconds
+
     def __init__(self, get_response):
+        super.__init__()
         self.get_response = get_response
 
     def __call__(self, request):
-        ...
+        super.__call__()
 
+        ip = self.get_client_ip(request)
+        key = f"rate-limit-{ip}"
+
+        request_count = cache.get(key, 0)
+
+        if request_count is None:
+            cache.set(key, 0, timeout=self.TIME_PERIOD)
+            request_count = 0
+
+        if request_count >= self.RATE_LIMIT:
+            return JsonResponse({"error": "Rate limit exceeded"}, status=429)
+
+        cache.incr(key)
+
+    def get_client_ip(self, request):
+        x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(",")[0]
+        else:
+            ip = request.META.get("REMOTE_ADDR")
+        return ip
