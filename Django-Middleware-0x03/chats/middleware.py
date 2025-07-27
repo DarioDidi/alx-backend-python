@@ -1,5 +1,6 @@
 from datetime import datetime, time
 import logging
+from django.http import HttpResponseForbidden
 
 logging.basicConfig(
     filename="requests.log",
@@ -42,6 +43,9 @@ class RestrictAccessByTimeMiddleware:
         user = request.user
         response = self.get_response(request)
         print(f"{datetime.now()} - User: {user} - Path: {request.path}")
+
+        if not self.in_between(now):
+            response = HttpResponseForbidden("Time out of service time")
 
         return response
 
