@@ -116,7 +116,7 @@ class ConversationViewSet(viewsets.ViewSet):
 
 @receiver(pre_delete, sender=Message)
 def delete_user(request, **kwargs):
-    sender = request.user
+    sender=request.user
     if not request.user.is_authenticated:
         return redirect("login")
 
