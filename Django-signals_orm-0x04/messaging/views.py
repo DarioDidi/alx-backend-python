@@ -38,7 +38,7 @@ class MessageViewSet(viewsets.ViewSet):
 
     @method_decorator(cache_page(60))
     def list(self, req, pk=None):
-        unread_messages = Message.unread_msgs.all()
+        unread_messages = Message.unread.unread_for_user()
         # queryset = Message.objects.filter(conversation=pk)
         serializer = MessageSerializer(unread_messages, many=True)
         return Response(serializer.data)
@@ -116,7 +116,8 @@ class ConversationViewSet(viewsets.ViewSet):
 
 @receiver(pre_delete, sender=Message)
 def delete_user(request, **kwargs):
-    sender=request.user
+    sender = request.user
+    # sender=request.user
     if not request.user.is_authenticated:
         return redirect("login")
 
