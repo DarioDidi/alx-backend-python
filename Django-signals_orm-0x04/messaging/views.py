@@ -1,6 +1,8 @@
 from django.shortcuts import get_object_or_404, redirect, HttpResponseRedirect
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 from rest_framework import viewsets, status
 from rest_framework.response import Response
@@ -34,6 +36,7 @@ class MessageViewSet(viewsets.ViewSet):
     permission_classes = IsParticipantOfConversation
     filterset_class = MessageFilter
 
+    @method_decorator(cache_page(60))
     def list(self, req, pk=None):
         unread_messages = Message.unread_msgs.all()
         # queryset = Message.objects.filter(conversation=pk)
