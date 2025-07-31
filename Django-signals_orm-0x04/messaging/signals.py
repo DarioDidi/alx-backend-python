@@ -26,6 +26,7 @@ def message_notification(sender, instance, created, **kwargs):
 @receiver(pre_save, sender=Message)
 def save_old_message(sender, instance, created, **kwargs):
     if not created:
+        sender.edited = True
         MessageHistory.objects.create(
             old_content=sender.content,
             orig_message=sender,

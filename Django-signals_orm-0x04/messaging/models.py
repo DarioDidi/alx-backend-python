@@ -37,6 +37,7 @@ class Message(models.Model):
     receiver = models.ForeignKey(Users, on_delete=models.CASCADE)
     read = models.BooleanField(default=False)
     unread_msgs = UnreadMessagesManager()
+    edited = models.BooleanField(default=False)
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
     parent = models.ForeignKey(
         "self",
@@ -69,7 +70,8 @@ class Message(models.Model):
 class MessageHistory(models.Model):
     old_content = models.TextField()
     sender = models.ForeignKey(Users, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
+    edited_at = models.DateTimeField(auto_now_add=True)
+    edited_by = models.ForeignKey(Users)
     orig_message = models.ForeignKey(Message)
     history_id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False
