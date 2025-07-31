@@ -38,7 +38,7 @@ class Message(models.Model):
         Users, on_delete=models.CASCADE, related_name="recepient"
     )
     read = models.BooleanField(default=False)
-    unread_msgs = UnreadMessagesManager()
+    unread = UnreadMessagesManager()
     edited = models.BooleanField(default=False)
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
     parent_message = models.ForeignKey(
