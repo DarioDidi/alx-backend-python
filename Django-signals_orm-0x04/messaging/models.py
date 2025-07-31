@@ -39,7 +39,7 @@ class Message(models.Model):
     unread_msgs = UnreadMessagesManager()
     edited = models.BooleanField(default=False)
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
-    parent = models.ForeignKey(
+    parent_message = models.ForeignKey(
         "self",
         on_delete=models.CASCADE,
         blank=True,

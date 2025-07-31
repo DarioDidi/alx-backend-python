@@ -1,4 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, HttpResponseRedirect
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
+
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 
@@ -106,7 +109,9 @@ class ConversationViewSet(viewsets.ViewSet):
         # return Response(serializer.data, status=status.HTTP_403_FORBIDDEN
 
 
+@receiver(pre_delete, sender=Message)
 def delete_user(request):
+    sender = request.user
     if not request.user.is_authenticated:
         return redirect("login")
 
