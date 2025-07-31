@@ -34,7 +34,9 @@ class Message(models.Model):
         primary_key=True, default=uuid.uuid4, editable=False
     )
     sender = models.ForeignKey(Users, on_delete=models.CASCADE)
-    receiver = models.ForeignKey(Users, on_delete=models.CASCADE)
+    receiver = models.ForeignKey(
+        Users, on_delete=models.CASCADE, related_name="recepient"
+    )
     read = models.BooleanField(default=False)
     unread_msgs = UnreadMessagesManager()
     edited = models.BooleanField(default=False)
@@ -71,8 +73,10 @@ class MessageHistory(models.Model):
     old_content = models.TextField()
     sender = models.ForeignKey(Users, on_delete=models.CASCADE)
     edited_at = models.DateTimeField(auto_now_add=True)
-    edited_by = models.ForeignKey(Users)
-    orig_message = models.ForeignKey(Message)
+    edited_by = models.ForeignKey(
+        Users, on_delete=models.CASCADE, related_name="editor"
+    )
+    orig_message = models.ForeignKey(Message, on_delete=models.CASCADE)
     history_id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False
     )
@@ -92,7 +96,7 @@ class Notification(models.Model):
     target_object_id = models.PositiveIntegerField(null=True, blank=True)
     target = GenericForeignKey("target_content_type", "target_object_id")
     timestamp = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeFiels(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def get_model_type(self):
         return self.__class__.__name__

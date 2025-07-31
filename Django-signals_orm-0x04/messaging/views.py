@@ -45,7 +45,9 @@ class MessageViewSet(viewsets.ViewSet):
 
     def retrieve(self, request, pk=None):
         # msg = get_object_or_404(Message, pk=pk)
-        msg = Message.objects.select_related("blog").get(message_id=pk)
+        msg = Message.objects.select_related("unread_msgs").only(
+            "content", "sender", "updated_at", "created_at"
+        )
         self.mark_read(msg)
         msg = Message.get_all_children(True)
         serializer = MessageSerializer(msg)
@@ -110,7 +112,7 @@ class ConversationViewSet(viewsets.ViewSet):
 
 
 @receiver(pre_delete, sender=Message)
-def delete_user(request):
+def delete_user(request, **kwargs):
     sender = request.user
     if not request.user.is_authenticated:
         return redirect("login")
