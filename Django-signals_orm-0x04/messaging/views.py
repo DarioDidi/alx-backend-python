@@ -11,7 +11,7 @@ from .pagination import MessagePagination
 from .filters import MessageFilter
 
 
-from chats.serializers import (
+from messaging.serializers import (
     ConversationSerializer,
     MessageSerializer,
 )

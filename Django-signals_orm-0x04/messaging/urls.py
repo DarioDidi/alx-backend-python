@@ -1,5 +1,5 @@
 from django.urls import include, path
-from chats.views import ConversationViewSet, MessageViewSet
+from messaging.views import ConversationViewSet, MessageViewSet
 from rest_framework import routers
 from rest_framework_nested.routers import NestedDefaultRouter
 
@@ -30,7 +30,7 @@ conversations_router.register(
 
 
 urlpatterns = [
-    # path("", include((main_router.urls, "chats"), namespace="chats")),
+    # path("", include((main_router.urls, "messaging"), namespace="messaging")),
     path("", include(app_router.urls)),
     path("", include(conversations_router.urls)),
 ]

@@ -21,7 +21,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost",
 ]
 
-AUTH_USER_MODEL = "chats.Users"
+AUTH_USER_MODEL = "messaging.Users"
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     "django_filters",
     "corsheaders",
     # apps
-    "chats",
+    "messaging",
 ]
 
 MIDDLEWARE = [
@@ -50,13 +50,13 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "chats.middleware.RequestLoggingMiddleware",
-    "chats.middleware.RestrictAccessByTimeMiddleware",
-    "chats.middleware.OffensiveLanguageMiddleware",
-    "chats.middleware.RolepermissionMiddleware",
+    "messaging.middleware.RequestLoggingMiddleware",
+    "messaging.middleware.RestrictAccessByTimeMiddleware",
+    "messaging.middleware.OffensiveLanguageMiddleware",
+    "messaging.middleware.RolepermissionMiddleware",
 ]
 
-ROOT_URLCONF = "messaging_app.urls"
+ROOT_URLCONF = "messaging.urls"
 
 TEMPLATES = [
     {
@@ -74,7 +74,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "messaging_app.wsgi.application"
+WSGI_APPLICATION = "messaging.wsgi.application"
 
 
 # Database
@@ -113,7 +113,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.BasicAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
-        "chats.permissions.IsParticipantOfConversation",
+        "messaging.permissions.IsParticipantOfConversation",
         "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
