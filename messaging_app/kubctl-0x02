@@ -8,7 +8,7 @@ kubectl apply -f green_deployment.yaml
 
 
 GREEN_POD=$(kubectl get pods -l version=green -o jsonpath='{.items[0].metadata.name}')
-kubectl logs $GREEN_POD
+kubectl logs "$GREEN_POD"
 
 echo "Switching to green version..."
 kubectl patch service django-service -p '{"spec":{"selector": {"version":"green"}}}'

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+echo "Applying rolling updates..."
+kubectl apply -f blue_deployment.yaml
+
+echo "Monitoring..."
+kubectl rollout status deployment/messagin-app
+
+echo "Testing update...."
+SERVICE_IP=$(minikube ip)
+SERVICE_PORT=$(kubectl get svc django-service -o jsonpath='{.specs.prts[0].nodePort}')
+
+for i in {1..30}
+do 
+	response=$(curl -s -o /dev/null -w "%{http_code}" http://"$SERVICE_IP:$SERVICE_PORT")
+	echo "Request $i: HTTP $response"
+	sleep 2
+done
+
+echo "Verifying update details..."
+kubectl get pods -l app=messagin-app
+kubectl get deployment messaging-app -o yaml | grep image:
+
+
+
+
