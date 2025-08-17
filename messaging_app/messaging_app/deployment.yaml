@@ -30,7 +30,7 @@ spec:
         - name: staticfiles
       containers:
         - name: messaging-app
-          image: messaging_app-web
+          image: dariodidi/messaging_app-web:1.0
           imagePullPolicy: Never
           resources:
             limits:

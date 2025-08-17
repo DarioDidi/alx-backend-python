@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: messaging-app
-        image: dariodidi/messaging-app
+          image: dariodidi/messaging-app:1.0
         resources:
           limits:
             memory: "128Mi"
