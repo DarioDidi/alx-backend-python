@@ -11,6 +11,6 @@ else
 	echo Running smooth
 fi
 
-PODS=$(kubectl get pods)
+kubectl get pods --all-namespaces
 
-echo "All pod: $PODS"
+echo "Cluster setup complete"
