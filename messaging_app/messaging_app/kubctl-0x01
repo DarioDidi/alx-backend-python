@@ -2,7 +2,7 @@
 
 echo "scaling..."
 
-kubectl scale deployment --replica=3  messaging-app -n default
+kubectl scale deployment --replicas=3  messaging-app -n default
 
 kubectl get pods
 
