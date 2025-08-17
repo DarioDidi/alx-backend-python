@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo "scaling..."
+
+kubectl scale --replica=3 deployment messaging-app -n default
+
+kubectl get pods
+
+wrk -t6 -c200 -d30s --latency http://localhost:32000
+
+kubectl top
+
+

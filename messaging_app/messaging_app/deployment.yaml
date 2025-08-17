@@ -3,11 +3,13 @@ kind: Service
 metadata:
   name: k8s-django-service
 spec:
+  type: NodePort
   selector:
-    app: messaging-app
+    app: messaging-app-server
   ports:
   - port: 8001
     targetPort: 8001
+    nodeport: 32001
 
 ---
 apiVersion: apps/v1
