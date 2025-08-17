@@ -1,0 +1,16 @@
+#!/bin/bash
+echo starting k8s....
+RES=$(minikube start);
+echo "result $RES"
+
+if [[ "$(kubectl cluster-info)" != "Kubernetes control plane is running"* ]]
+then
+	echo "NOT RUNNING!!"
+	return
+else
+	echo Running smooth
+fi
+
+PODS=$(kubectl get pods)
+
+echo "All pod: $PODS"
