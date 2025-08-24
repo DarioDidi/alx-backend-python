@@ -11,24 +11,22 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git(
-                    url: 'https://github.com/DarioDidi/gend_mapp.git',
+                git branch: 'main'
+                    url: 'https://github.com/DarioDidi/alx-backend-python.git',
                     credentialsId: 'github-credentials',
-                    branch: 'main'
-                )
             }
         }
         
         stage('Install Dependencies') {
             steps {
                 sh 'python -m pip install --upgrade pip'
-                sh 'pip install -r requirements.txt'
+                sh 'pip3 install -r messaging_app/requirements.txt'
             }
         }
         
         stage('Run Tests with Pytest') {
             steps {
-                sh 'python -m pytest --junitxml=test-results/junit.xml --cov=./ --cov-report=xml:coverage.xml'
+                sh 'cd messaging_app && python -m pytest --junitxml=test-results/junit.xml --cov=./ --cov-report=xml:coverage.xml'
             }
             post {
                 always {
