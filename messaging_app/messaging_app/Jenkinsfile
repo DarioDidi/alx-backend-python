@@ -1,0 +1,86 @@
+pipeline {
+    agent any
+    
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('docker-hub-credentials')
+        GITHUB_CREDENTIALS = credentials('github-credentials')
+        DOCKER_IMAGE = 'dariodidi/messaging_app'
+        DOCKER_TAG = "${env.BUILD_NUMBER}"
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                git(
+                    url: 'https://github.com/DarioDidi/gend_mapp.git',
+                    credentialsId: 'github-credentials',
+                    branch: 'main'
+                )
+            }
+        }
+        
+        stage('Install Dependencies') {
+            steps {
+                sh 'python -m pip install --upgrade pip'
+                sh 'pip install -r requirements.txt'
+            }
+        }
+        
+        stage('Run Tests with Pytest') {
+            steps {
+                sh 'python -m pytest --junitxml=test-results/junit.xml --cov=./ --cov-report=xml:coverage.xml'
+            }
+            post {
+                always {
+                    junit 'test-results/junit.xml'
+                    publishHTML([
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: false,
+                        keepAll: false,
+                        reportDir: 'htmlcov',
+                        reportFiles: 'index.html',
+                        reportName: 'Coverage Report',
+                        reportTitles: ''
+                    ])
+                }
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}")
+                }
+            }
+        }
+        
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                        docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").push()
+                        docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").push('latest')
+                    }
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            cleanWs()
+        }
+        success {
+            slackSend(
+                channel: '#builds',
+                message: "Build ${env.BUILD_NUMBER} succeeded!
+            )
+        }
+        failure {
+            slackSend(
+                channel: '#builds',
+                message: "Build ${env.BUILD_NUMBER} failed!"
+            )
+        }
+    }
+}
